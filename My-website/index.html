@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feifei Zhang</title>
+<style>
+:root{color-scheme:dark;--bg:#000;--card:#111;--text:#fff;--muted:#aaa;--line:#333}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Arial,sans-serif;line-height:1.5}
+header{padding:48px 20px 16px;text-align:center}
+h1{margin:0;font-size:2.2rem}
+nav{display:flex;gap:16px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+nav a{color:var(--text);text-decoration:none;opacity:.8}
+nav a:hover{opacity:1}
+main{max-width:960px;margin:0 auto;padding:0 20px 60px}
+section{margin-top:40px;scroll-margin-top:20px}
+.head{border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:16px}
+h2{margin:0}
+.blurb{white-space:pre-wrap;color:var(--muted);margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.item a{display:block;color:inherit;text-decoration:none}
+.item img{display:block;width:100%;height:170px;object-fit:cover;background:#1a1a1a}
+.item .cap{padding:8px 10px;font-size:.85rem;color:var(--muted);overflow-wrap:anywhere}
+.ph{height:170px;display:flex;align-items:center;justify-content:center;background:#1a1a1a;color:#888;font-size:.8rem}
+.pdf{display:flex;align-items:center;gap:10px;padding:16px;color:var(--text);height:100%}
+.pdf .ic{font-size:1.8rem}
+.empty{color:var(--muted);font-size:.9rem}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:40px 20px}
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title">Feifei Zhang</h1>
+  <nav id="nav"></nav>
+</header>
+<main id="app"></main>
+<footer id="foot"></footer>
+
+<script>
+/* YOUR FILES ARE ALREADY ADDED HERE */
+const CONFIG = {
+  title: "Feifei Zhang",
+  sections: [
+    { key: "introduction",  label: "Introduction",  text: "" },
+    { key: "graphics",      label: "Graphics",      text: "At UBC, I joined a student council and designed promotional materials for their events." },
+    { key: "illustrations", label: "Illustrations", text: "" },
+    { key: "learning",      label: "Learning",      text: "" },
+  ],
+  items: [
+    // --- ILLUSTRATIONS ---
+    { section:"illustrations", name:"2. シャツの色", type:"image", src:"images/2. シャツの色.png" },
+    { section:"illustrations", name:"Copy of IMG_2546", type:"image", src:"images/Copy of IMG_2546.PNG" },
+    { section:"illustrations", name:"Illust sample 1", type:"image", src:"images/Illust_sample_1.jpg" },
+    { section:"illustrations", name:"Illust sample 2", type:"image", src:"images/Illust_sample_2.jpg" },
+    { section:"illustrations", name:"Illust sample 3", type:"image", src:"images/illust_sample_3.PNG" },
+    { section:"illustrations", name:"IMG_1395", type:"image", src:"images/IMG_1395.PNG" },
+    { section:"illustrations", name:"IMG_2527", type:"image", src:"images/IMG_2527.PNG" },
+    { section:"illustrations", name:"IMG_2532", type:"image", src:"images/IMG_2532.JPG" },
+    { section:"illustrations", name:"IMG_2546", type:"image", src:"images/IMG_2546.PNG" },
+
+    // --- GRAPHICS ---
+    { section:"graphics", name:"Trivia Night", type:"image", src:"images/1785433491349.jpg" },
+    { section:"graphics", name:"Attending Firms", type:"image", src:"images/1787087630341.jpg" },
+    { section:"graphics", name:"Casino Night", type:"image", src:"images/1788463829347.jpg" },
+    { section:"graphics", name:"Mentorship Program", type:"image", src:"images/1790276900212.jpg" }
+  ]
+};
+
+const $ = id => document.getElementById(id);
+$("title").textContent = CONFIG.title;
+document.title = CONFIG.title;
+
+CONFIG.sections.forEach(s => {
+  const a = document.createElement("a");
+  a.href = "#" + s.key;
+  a.textContent = s.label;
+  $("nav").appendChild(a);
+});
+
+CONFIG.sections.forEach(s => {
+  const sec = document.createElement("section");
+  sec.id = s.key;
+
+  const head = document.createElement("div");
+  head.className = "head";
+  const h2 = document.createElement("h2");
+  h2.textContent = s.label;
+  head.appendChild(h2);
+  sec.appendChild(head);
+
+  if (s.text) {
+    const p = document.createElement("p");
+    p.className = "blurb";
+    p.textContent = s.text;
+    sec.appendChild(p);
+  }
+
+  const items = CONFIG.items.filter(i => i.section === s.key);
+  if (!items.length) {
+    const e = document.createElement("p");
+    e.className = "empty";
+    e.textContent = "Nothing here yet.";
+    sec.appendChild(e);
+    $("app").appendChild(sec);
+    return;
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "grid";
+
+  items.forEach(it => {
+    const d = document.createElement("div");
+    d.className = "item";
+
+    if (it.type === "pdf") {
+      const a = document.createElement("a");
+      a.className = "pdf";
+      a.href = it.src;
+      a.target = "_blank";
+      a.rel = "noopener";
+      const ic = document.createElement("span");
+      ic.className = "ic";
+      ic.textContent = "📄";
+      const nm = document.createElement("span");
+      nm.textContent = it.name;
+      a.append(ic, nm);
+      d.appendChild(a);
+    } else {
+      const a = document.createElement("a");
+      a.href = it.src;
+      a.target = "_blank";
+      a.rel = "noopener";
+      const im = document.createElement("img");
+      im.src = it.src;
+      im.alt = it.name;
+      im.loading = "lazy";
+      im.onerror = () => {
+        im.style.display = "none";
+        const ph = document.createElement("div");
+        ph.className = "ph";
+        ph.textContent = "⚠ image unavailable";
+        a.appendChild(ph);
+      };
+      a.appendChild(im);
+      const c = document.createElement("div");
+      c.className = "cap";
+      c.textContent = it.name;
+      d.append(a, c);
+    }
+    grid.appendChild(d);
+  });
+
+  sec.appendChild(grid);
+  $("app").appendChild(sec);
+});
+
+$("foot").textContent = "© " + new Date().getFullYear() + " " + CONFIG.title;
+</script>
+</body>
+</html><script async src="/.netlify/scripts/hud?variant=owner-private" data-nf-variant="owner-private" data-netlify-site-id="8e214b76-a3a3-4e4c-957e-aec627ada0c7" data-app-host="app.netlify.com"></script>
