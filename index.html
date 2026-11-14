@@ -102,10 +102,6 @@ CONFIG.sections.forEach(s => {
 
   const items = CONFIG.items.filter(i => i.section === s.key);
   if (!items.length) {
-    const e = document.createElement("p");
-    e.className = "empty";
-    e.textContent = "Nothing here yet.";
-    sec.appendChild(e);
     $("app").appendChild(sec);
     return;
   }
